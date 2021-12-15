@@ -27,7 +27,6 @@
       </div>
     </div>
     
-    
     <div>
       <input
         type="submit"
@@ -36,7 +35,27 @@
         :disabled="loading"
       />
     </div>
-    
+    <div>
+      Upload Sampleworks
+    </div>
+    <div>
+      <img
+      v-if="circle_data.sampleworks_image"
+      :src="circle_data.sampleworks_image"
+      alt="Avatar"
+      class="avatar image"
+      :style="{ height: size, width: size }"
+      />
+      <div
+        v-else
+        class="avatar no-image"
+        :style="{ height: size, width: size }"
+      />
+    </div>
+    <div class="row">
+      <div>Choose Samplework file</div>
+      <input type="file" @change="uploadSampleworks" name="file" />
+    </div>
 
     <div>
       <button class="button block" @click="signOut" :disabled="loading">
@@ -50,6 +69,7 @@
 import { supabase } from "../supabase"
 import { store } from "../store"
 import { onMounted, ref } from "vue"
+import { compileScript } from "@vue/compiler-sfc"
 // import Avatar from "./Avatar.vue"
 
 export default {
@@ -128,7 +148,7 @@ export default {
         if(store.user?.id) {
           let { data, error, status } = await supabase
             .from("circle_data")
-            .select('name,SellsCommision,SellsComic,SellsArtbook,SellsPhotobook,SellsNovel,SellsGame,SellsMusic,SellsGoods,circle_facebook,circle_instagram,circle_twitter,circle_other_socials,marketplace_link,other_fandom')
+            .select('name,circle_code,SellsCommision,SellsComic,SellsArtbook,SellsPhotobook,SellsNovel,SellsGame,SellsMusic,SellsGoods,circle_facebook,circle_instagram,circle_twitter,circle_other_socials,marketplace_link,other_fandom,sampleworks_image')
             .eq("user_id", store.user.id)
             .single()
 
@@ -144,16 +164,54 @@ export default {
         loading.value = false
       }
     }
+    async function uploadSampleworks(event) {
+      try {
+        loading.value = true
+        const sampleFile = event.target.files[0]
+        const filename = sampleFile.name.split('.').pop();
+
+        const file_folder = self.crypto.randomUUID();
+        
+        const { data, error: error_upload } = await supabase
+          .storage
+          .from('circle-sampleworks')
+          .upload(`${store.user.id}/${file_folder}/${circle_data.value.circle_code}.${filename}`, sampleFile, {
+            cacheControl: '3600',
+            upsert: true
+          }
+          )
+
+        console.log(data);
+          
+        if (error_upload) throw error_upload
+
+        const { data: data_update, error: error_update } = await supabase
+          .from('circle_data')
+          .update({ sampleworks_image: `https://kumxjefxtrrpzalmwvvr.supabase.in/storage/v1/object/public/circle-sampleworks/${store.user.id}/${file_folder}/${circle_data.value.circle_code}.${filename}` }, )
+          .match({ user_id: store.user.id })
+         if (error_update) throw error_update
+         console.log(data_update[0].sampleworks_image);
+         circle_data.value.sampleworks_image = data_update[0].sampleworks_image;
+
+        if (data) alert("Sampleworks Circle Berhasil Diperbarui ")
+      } catch (error) {
+        alert(error.message)
+      } finally {
+        loading.value = false
+      }
+      
+    }
 
     async function updateProfile() {
       try {
         loading.value = true
         const { data, error } = await supabase
           .from('circle_data')
-          .update({ other_fandom: circle_data.value.other_fandom })
+          .update({ ...circle_data.value })
           .match({ user_id: store.user.id })
 
         if (error) throw error
+        if (data) alert("Data Circle Berhasil Diperbarui")
       } catch (error) {
         alert(error.message)
       } finally {
@@ -180,6 +238,7 @@ export default {
       circle_data,
       getCircleData,
       updateProfile,
+      uploadSampleworks,
       signOut,
     }
   },
