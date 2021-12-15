@@ -19,7 +19,7 @@ export default {
   setup() {
     store.user = supabase.auth.user()
     supabase.auth.onAuthStateChange((_, session) => {
-      store.user = session.user
+      store.user = session?.user
     })
 
     return {

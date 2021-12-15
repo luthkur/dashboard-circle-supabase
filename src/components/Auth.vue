@@ -1,8 +1,8 @@
 <template>
   <form class="row flex flex-center" @submit.prevent="handleLogin">
     <div class="col-6 form-widget">
-      <h1 class="header">Supabase + Vue 3</h1>
-      <p class="description">Sign in via magic link with your email below</p>
+      <h1 class="header">Comivuro 2 Circle Catalog Dashboard</h1>
+      <p class="description">Sign in with your email and the password provided in the email sent to your inbox</p>
       <div>
         <input
           class="inputField"
@@ -11,11 +11,19 @@
           v-model="email"
         />
       </div>
+       <div>
+        <input
+          class="inputField"
+          type="password"
+          placeholder="Your password"
+          v-model="password"
+        />
+      </div>
       <div>
         <input
           type="submit"
           class="button block"
-          :value="loading ? 'Loading' : 'Send magic link'"
+          :value="loading ? 'Loading' : 'Login'"
           :disabled="loading"
         />
       </div>
@@ -24,6 +32,7 @@
 </template>
 
 <script>
+import { store } from "../store"
 import { ref } from "vue"
 import { supabase } from "../supabase"
 
@@ -31,13 +40,14 @@ export default {
   setup() {
     const loading = ref(false)
     const email = ref("")
+    const password = ref("")
 
     const handleLogin = async () => {
       try {
         loading.value = true
-        const { error } = await supabase.auth.signIn({ email: email.value })
+        const { user, error } = await supabase.auth.signIn({ email: email.value, password: password.value })
         if (error) throw error
-        alert("Check your email for the login link!")
+        store.user = user;
       } catch (error) {
         alert(error.error_description || error.message)
       } finally {
@@ -48,6 +58,7 @@ export default {
     return {
       loading,
       email,
+      password,
       handleLogin,
     }
   },

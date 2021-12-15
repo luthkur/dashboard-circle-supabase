@@ -71,7 +71,7 @@ export default {
         const filePath = `${fileName}`
 
         let { error: uploadError } = await supabase.storage
-          .from("avatars")
+          .from("circle_sample")
           .upload(filePath, file)
 
         if (uploadError) throw uploadError
