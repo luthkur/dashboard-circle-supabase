@@ -57,12 +57,6 @@
       <input type="file" @change="uploadSampleworks" name="file" />
     </div>
 
-    <div class="row">
-     <button class="button block" @click="signOut" :disabled="loading">
-        Upload
-      </button>
-    </div>
-
     <div>
       <button class="button block" @click="signOut" :disabled="loading">
         Sign Out
