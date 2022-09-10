@@ -57,6 +57,12 @@
       <input type="file" @change="uploadSampleworks" name="file" />
     </div>
 
+    <div class="row">
+     <button class="button block" @click="signOut" :disabled="loading">
+        Upload
+      </button>
+    </div>
+
     <div>
       <button class="button block" @click="signOut" :disabled="loading">
         Sign Out
@@ -132,14 +138,12 @@ export default {
       value : 'circle_other_socials'
     },
     {
-      label : 'Link Ke Toko Circle',
-      value : 'marketplace_link'
-    },
-    {
       label : 'Fandom Lainnya',
       value : 'other_fandom'
     },
     ]
+
+    const circle_samples = ref("")
 
     async function getCircleData() {
       try {
@@ -187,7 +191,7 @@ export default {
 
         const { data: data_update, error: error_update } = await supabase
           .from('circle_data')
-          .update({ sampleworks_image: `https://kumxjefxtrrpzalmwvvr.supabase.in/storage/v1/object/public/circle-sampleworks/${store.user.id}/${file_folder}/${circle_data.value.circle_code}.${filename}` }, )
+          .update({ sampleworks_image: [`https://kumxjefxtrrpzalmwvvr.supabase.in/storage/v1/object/public/circle-sampleworks/${store.user.id}/${file_folder}/${circle_data.value.circle_code}.${filename}`]}, )
           .match({ user_id: store.user.id })
          if (error_update) throw error_update
          console.log(data_update[0].sampleworks_image);
