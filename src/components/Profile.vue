@@ -72,6 +72,8 @@ import { onMounted, ref } from "vue"
 import { compileScript } from "@vue/compiler-sfc"
 // import Avatar from "./Avatar.vue"
 
+import imageReducer from 'image-blob-reduce';
+
 export default {
   // components: {
   //   Avatar,
@@ -139,6 +141,10 @@ export default {
 
     const circle_samples = ref("")
 
+    function blobToFile(theBlob, fileName){       
+      return new File([theBlob], fileName, { lastModified: new Date().getTime(), type: theBlob.type })
+    }
+
     async function getCircleData() {
       try {
         loading.value = true
@@ -168,12 +174,21 @@ export default {
         const sampleFile = event.target.files[0]
         const filename = sampleFile.name.split('.').pop();
 
+        let reduce =new imageReducer()
+        let resizeFile = null;
+
+        console.log(sampleFile)
+
+        await reduce
+          .toBlob(sampleFile, { max: 3000 })
+          .then(blob => { resizeFile = blobToFile(blob,filename) });
+
         const file_folder = self.crypto.randomUUID();
         
         const { data, error: error_upload } = await supabase
           .storage
           .from('circle-sampleworks')
-          .upload(`${store.user.id}/${file_folder}/${circle_data.value.circle_code}.${filename}`, sampleFile, {
+          .upload(`${store.user.id}/${file_folder}/${circle_data.value.circle_code}.${filename}`, resizeFile, {
             cacheControl: '3600',
             upsert: true
           }
