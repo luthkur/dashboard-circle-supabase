@@ -180,7 +180,7 @@ export default {
         console.log(sampleFile)
 
         await reduce
-          .toBlob(sampleFile, { max: 3000 })
+          .toBlob(sampleFile, { max: 1000 })
           .then(blob => { resizeFile = blobToFile(blob,filename) });
 
         const file_folder = self.crypto.randomUUID();
