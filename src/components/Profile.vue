@@ -114,7 +114,12 @@ export default {
     {
       label : 'Sells Goods',
       value : 'SellsGoods'
-    }]
+    },
+    {
+      label : 'Sells Handmade Crafts',
+      value : 'SellsHandmadeCrafts'
+    }
+  ]
 
     const listInput = [
     {
