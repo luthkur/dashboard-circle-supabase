@@ -2,7 +2,7 @@
   <form class="row flex flex-center" @submit.prevent="handleLogin">
     <div class="col-6 form-widget">
       <h1 class="header">Comifuro 16 Circle Catalog Dashboard</h1>
-      <p class="description">Sign in with your email and the password provided in the email sent to your inbox</p>
+      <p class="description">Sign in with your email and password which provided in the email we sent to your inbox</p>
       <div>
         <input
           class="inputField"
