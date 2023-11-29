@@ -96,8 +96,12 @@ export default {
       value : 'SellsArtbook'
     },
     {
-      label : 'Sells Photobook',
-      value : 'SellsPhotobook'
+      label : 'Sells Photobook General',
+      value : 'SellsPhotobookGeneral'
+    },
+    {
+      label : 'Sells Photobook Cosplay',
+      value : 'SellsPhotobookCosplay'
     },
     {
       label : 'Sells Novel',
@@ -118,6 +122,10 @@ export default {
     {
       label : 'Sells Handmade Crafts',
       value : 'SellsHandmadeCrafts'
+      },
+    {
+      label : 'Sells Magazine',
+      value : 'SellsMagazine'
     }
   ]
 
@@ -205,7 +213,7 @@ export default {
 
         const { data: data_update, error: error_update } = await supabase
           .from('circle_data')
-          .update({ sampleworks_image: [`https://kumxjefxtrrpzalmwvvr.supabase.in/storage/v1/object/public/circle-sampleworks/${store.user.id}/${file_folder}/${circle_data.value.circle_code}.${filename}`]}, )
+          .update({ sampleworks_image: [`https://kumxjefxtrrpzalmwvvr.supabase.in/storage/v1/object/public/circle-sampleworks-17/${store.user.id}/${file_folder}/${circle_data.value.circle_code}.${filename}`]}, )
           .match({ user_id: store.user.id })
          if (error_update) throw error_update
          console.log(data_update[0].sampleworks_image);
