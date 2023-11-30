@@ -165,7 +165,7 @@ export default {
         if(store.user?.id) {
           let { data, error, status } = await supabase
             .from("circle_data")
-            .select('name,circle_code,SellsCommision,SellsComic,SellsArtbook,SellsPhotobookGeneral,SellsNovel,SellsGame,SellsMusic,SellsGoods,circle_facebook,circle_instagram,circle_twitter,circle_other_socials,marketplace_link,other_fandom,sampleworks_image,SellsHandmade,CraftsSellsMagazine,SellsPhotobook')
+            .select('name,circle_code,SellsCommision,SellsComic,SellsArtbook,SellsPhotobookGeneral,SellsNovel,SellsGame,SellsMusic,SellsGoods,circle_facebook,circle_instagram,circle_twitter,circle_other_socials,marketplace_link,other_fandom,sampleworks_image,SellsHandmadeCrafts,SellsMagazine,SellsPhotobookCosplay')
             .eq("user_id", store.user.id)
             .single()
 
@@ -200,7 +200,7 @@ export default {
         
         const { data, error: error_upload } = await supabase
           .storage
-          .from('circle-sampleworks')
+          .from('circle-sampleworks-17')
           .upload(`${store.user.id}/${file_folder}/${circle_data.value.circle_code}.${filename}`, resizeFile, {
             cacheControl: '3600',
             upsert: true
