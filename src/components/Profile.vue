@@ -165,7 +165,7 @@ export default {
         if(store.user?.id) {
           let { data, error, status } = await supabase
             .from("circle_data")
-            .select('name,circle_code,SellsCommision,SellsComic,SellsArtbook,SellsPhotobook,SellsNovel,SellsGame,SellsMusic,SellsGoods,circle_facebook,circle_instagram,circle_twitter,circle_other_socials,marketplace_link,other_fandom,sampleworks_image')
+            .select('name,circle_code,SellsCommision,SellsComic,SellsArtbook,SellsPhotobookGeneral,SellsNovel,SellsGame,SellsMusic,SellsGoods,circle_facebook,circle_instagram,circle_twitter,circle_other_socials,marketplace_link,other_fandom,sampleworks_image,SellsHandmade,CraftsSellsMagazine,SellsPhotobook')
             .eq("user_id", store.user.id)
             .single()
 
