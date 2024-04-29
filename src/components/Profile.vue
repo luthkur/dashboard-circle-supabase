@@ -55,6 +55,7 @@
         gap: '16px',
       }"
     >
+      <h2 v-if="uploadLoading">Image are being uploaded, please wait</h2>
       <div
         v-for="sampleworks_image in sampleworks_images_list"
         :key="sampleworks_image"
@@ -64,6 +65,7 @@
           'justify-content': 'center',
           border: 'solid',
           borderColor: 'white',
+          cursor: 'grab',
         }"
       >
         <img
@@ -82,12 +84,12 @@
     </div>
 
     <div v-if="sampleworks_images_list.length < 10" class="add-image-row">
-      <div>
+      <h2>
         Choose Samplework files: You can upload additional
         {{ 10 - sampleworks_images_list.length }} images. Selected files will be
         uploaded and you can sort the order. The changes will be reflected
         immediately in the catalog.
-      </div>
+      </h2>
       <input
         type="file"
         multiple
@@ -120,6 +122,7 @@ export default {
   // },
   setup() {
     const loading = ref(true);
+    const uploadLoading = ref(true);
     const circle_data = ref("");
 
     const listToggle = [
@@ -218,7 +221,9 @@ export default {
 
           if (data) {
             circle_data.value = data;
-            sampleworks_images_list.value = data.sampleworks_images;
+            sampleworks_images_list.value = data.sampleworks_images
+              ? data.sampleworks_images
+              : [];
           }
         }
       } catch (error) {
@@ -245,6 +250,7 @@ export default {
     }
 
     async function chooseSampleworks(event) {
+      uploadLoading.value = true;
       const imageLimit = 10 - sampleworks_images_list.value.length;
 
       if (event.target.files.length > imageLimit) {
@@ -252,6 +258,7 @@ export default {
         alert(
           `You can only select up to ${imageLimit} images, because you already uploaded ${sampleworks_images_list.value.length} images`
         );
+        uploadLoading.value = false;
         return;
       }
       try {
@@ -303,6 +310,7 @@ export default {
       } finally {
         event.target.value = null;
         loading.value = false;
+        uploadLoading.value = false;
       }
     }
 
@@ -310,9 +318,10 @@ export default {
       try {
         loading.value = true;
         console.log(circle_data.value);
+        const { sampleworks_images, ...circleData } = circle_data.value;
         const { data, error } = await supabase
           .from("circle_data")
-          .update({ ...circle_data.value })
+          .update({ ...circleData })
           .match({ user_id: store.user.id });
 
         if (error) throw error;
@@ -356,6 +365,7 @@ export default {
     return {
       store,
       loading,
+      uploadLoading,
       listToggle,
       listInput,
       circle_data,
