@@ -122,7 +122,7 @@ export default {
   // },
   setup() {
     const loading = ref(true);
-    const uploadLoading = ref(true);
+    const uploadLoading = ref(false);
     const circle_data = ref("");
 
     const listToggle = [
