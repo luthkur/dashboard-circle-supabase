@@ -283,7 +283,7 @@ export default {
               `${store.user.id}/${file_folder}/${circle_data.value.circle_code}.${filename}`,
               resizeFile,
               {
-                cacheControl: "3600",
+                cacheControl: "604800",
                 upsert: true,
               }
             );
