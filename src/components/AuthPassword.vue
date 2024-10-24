@@ -48,7 +48,10 @@ export default {
     const handleLogin = async () => {
       try {
         loading.value = true;
-        const { user, error } = await supabase.auth.signIn({
+        const {
+          data: { user },
+          error,
+        } = await supabase.auth.signIn({
           email: email.value,
           password: password.value,
         });

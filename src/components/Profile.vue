@@ -44,7 +44,7 @@
     </div>
     <h2>
       Choose Sampleworks to upload, you can upload up to 10 images for the
-      catalog. You can drag and drop images to sort the image to your need
+      catalog. You can do drag and drop images to sort the image to your need
     </h2>
     <div
       ref="parent"
@@ -236,7 +236,7 @@ export default {
     async function removeImage(sampleworks_image, $event) {
       $event.preventDefault();
       const { data, error: error_upload } = await supabase.storage
-        .from("circle-sampleworks-18")
+        .from("circle-sampleworks-19")
         .remove([sampleworks_image.slice(88)], {
           cacheControl: "3600",
           upsert: true,
@@ -278,7 +278,7 @@ export default {
           const file_folder = self.crypto.randomUUID();
 
           const { data, error: error_upload } = await supabase.storage
-            .from("circle-sampleworks-18")
+            .from("circle-sampleworks-19")
             .upload(
               `${store.user.id}/${file_folder}/${circle_data.value.circle_code}.${filename}`,
               resizeFile,
