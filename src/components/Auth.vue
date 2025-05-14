@@ -1,7 +1,7 @@
 <template>
   <form class="row flex flex-center" @submit.prevent="handleLogin">
     <div class="col-6 form-widget">
-      <h1 class="header">Comifuro 19 Circle Catalog Dashboard</h1>
+      <h1 class="header">Comifuro XX Circle Catalog Dashboard</h1>
       <p class="description">
         Sign in with your email and password which provided in the email we sent
         to your inbox
@@ -48,7 +48,7 @@ export default {
     const handleLogin = async () => {
       try {
         loading.value = true;
-        const { user, error } = await supabase.auth.signIn({
+        const { user, error } = await supabase.auth.signInWithPassword({
           email: email.value,
           password: password.value,
         });

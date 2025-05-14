@@ -205,9 +205,11 @@ export default {
     }
 
     async function getCircleData() {
+      console.log("circle data call");
       try {
         loading.value = true;
-        store.user = supabase.auth.user();
+        store.user = (await supabase.auth.getUser()).data.user;
+        console.log(store.user);
         if (store.user?.id) {
           let { data, error, status } = await supabase
             .from("circle_data")
@@ -218,7 +220,7 @@ export default {
             .single();
 
           if (error && status !== 406) throw error;
-
+          console.log(data, error, status);
           if (data) {
             circle_data.value = data;
             sampleworks_images_list.value = data.sampleworks_images
@@ -236,7 +238,7 @@ export default {
     async function removeImage(sampleworks_image, $event) {
       $event.preventDefault();
       const { data, error: error_upload } = await supabase.storage
-        .from("circle-sampleworks-19")
+        .from("circle-sampleworks-20")
         .remove([sampleworks_image.slice(88)], {
           cacheControl: "3600",
           upsert: true,
@@ -278,7 +280,7 @@ export default {
           const file_folder = self.crypto.randomUUID();
 
           const { data, error: error_upload } = await supabase.storage
-            .from("circle-sampleworks-19")
+            .from("circle-sampleworks-20")
             .upload(
               `${store.user.id}/${file_folder}/${circle_data.value.circle_code}.${filename}`,
               resizeFile,
@@ -288,8 +290,10 @@ export default {
               }
             );
 
+          console.log(data);
+
           sampleworks_images_list.value.push(
-            `https://kumxjefxtrrpzalmwvvr.supabase.in/storage/v1/object/public/${data.Key}`
+            `https://kumxjefxtrrpzalmwvvr.supabase.in/storage/v1/object/public/${data.fullPath}`
           );
 
           if (error_upload) throw error_upload;
@@ -341,6 +345,7 @@ export default {
     }
 
     onMounted(() => {
+      console.log("did you mount");
       getCircleData();
     });
 

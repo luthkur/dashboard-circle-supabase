@@ -7,7 +7,7 @@
   },
   "dependencies": {
     "@formkit/drag-and-drop": "^0.0.38",
-    "@supabase/supabase-js": "^1.14.0",
+    "@supabase/supabase-js": "^v2.49.4",
     "image-blob-reduce": "^4.1.0",
     "pica": "^9.0.1",
     "tus-js-client": "^4.1.0",
