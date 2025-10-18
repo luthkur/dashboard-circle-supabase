@@ -238,7 +238,7 @@ export default {
     async function removeImage(sampleworks_image, $event) {
       $event.preventDefault();
       const { data, error: error_upload } = await supabase.storage
-        .from("circle-sampleworks-20")
+        .from("circle-sampleworks-21")
         .remove([sampleworks_image.slice(88)], {
           cacheControl: "3600",
           upsert: true,
@@ -280,7 +280,7 @@ export default {
           const file_folder = self.crypto.randomUUID();
 
           const { data, error: error_upload } = await supabase.storage
-            .from("circle-sampleworks-20")
+            .from("circle-sampleworks-21")
             .upload(
               `${store.user.id}/${file_folder}/${circle_data.value.circle_code}.${filename}`,
               resizeFile,
