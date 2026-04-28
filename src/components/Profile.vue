@@ -214,7 +214,7 @@ export default {
           let { data, error, status } = await supabase
             .from("circle_data")
             .select(
-              "name,circle_code,SellsCommision,SellsComic,SellsArtbook,SellsPhotobookGeneral,SellsNovel,SellsGame,SellsMusic,SellsGoods,circle_facebook,circle_instagram,circle_twitter,circle_other_socials,marketplace_link,other_fandom,sampleworks_images,SellsHandmadeCrafts,SellsMagazine,SellsPhotobookCosplay"
+              "name,circle_code,SellsCommision,SellsComic,SellsArtbook,SellsPhotobookGeneral,SellsNovel,SellsGame,SellsMusic,SellsGoods,circle_facebook,circle_instagram,circle_twitter,circle_other_socials,marketplace_link,other_fandom,sampleworks_images,SellsHandmadeCrafts,SellsMagazine,SellsPhotobookCosplay",
             )
             .eq("user_id", store.user.id)
             .single();
@@ -238,14 +238,14 @@ export default {
     async function removeImage(sampleworks_image, $event) {
       $event.preventDefault();
       const { data, error: error_upload } = await supabase.storage
-        .from("circle-sampleworks-21")
+        .from("circle-sampleworks-22")
         .remove([sampleworks_image.slice(88)], {
           cacheControl: "3600",
           upsert: true,
         });
 
       const filteredSampleworks = sampleworks_images_list.value.filter(
-        (image) => image !== sampleworks_image
+        (image) => image !== sampleworks_image,
       );
 
       sampleworks_images_list.value = filteredSampleworks;
@@ -258,7 +258,7 @@ export default {
       if (event.target.files.length > imageLimit) {
         event.target.value = null;
         alert(
-          `You can only select up to ${imageLimit} images, because you already uploaded ${sampleworks_images_list.value.length} images`
+          `You can only select up to ${imageLimit} images, because you already uploaded ${sampleworks_images_list.value.length} images`,
         );
         uploadLoading.value = false;
         return;
@@ -280,20 +280,20 @@ export default {
           const file_folder = self.crypto.randomUUID();
 
           const { data, error: error_upload } = await supabase.storage
-            .from("circle-sampleworks-21")
+            .from("circle-sampleworks-22")
             .upload(
               `${store.user.id}/${file_folder}/${circle_data.value.circle_code}.${filename}`,
               resizeFile,
               {
                 cacheControl: "604800",
                 upsert: true,
-              }
+              },
             );
 
           console.log(data);
 
           sampleworks_images_list.value.push(
-            `https://kumxjefxtrrpzalmwvvr.supabase.in/storage/v1/object/public/${data.fullPath}`
+            `https://kumxjefxtrrpzalmwvvr.supabase.in/storage/v1/object/public/${data.fullPath}`,
           );
 
           if (error_upload) throw error_upload;
@@ -364,7 +364,7 @@ export default {
 
           circle_data.value.sampleworks_images = data_update;
         }
-      }
+      },
     );
 
     return {
