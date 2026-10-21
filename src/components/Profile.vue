@@ -111,7 +111,6 @@
 import { supabase } from "../supabase";
 import { store } from "../store";
 import { onMounted, ref, watch } from "vue";
-import { compileScript } from "@vue/compiler-sfc";
 // import Avatar from "./Avatar.vue"
 import { useDragAndDrop } from "@formkit/drag-and-drop/vue";
 import imageReducer from "image-blob-reduce";
@@ -174,7 +173,7 @@ export default {
 
     const listInput = [
       {
-        label: "Link Facebook",
+        label: "Link Youtube",
         value: "circle_youtube",
       },
       {
