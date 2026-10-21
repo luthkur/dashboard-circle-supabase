@@ -175,7 +175,7 @@ export default {
     const listInput = [
       {
         label: "Link Facebook",
-        value: "circle_facebook",
+        value: "circle_youtube",
       },
       {
         label: "Link Instagram",
@@ -214,7 +214,7 @@ export default {
           let { data, error, status } = await supabase
             .from("circle_data")
             .select(
-              "name,circle_code,SellsCommision,SellsComic,SellsArtbook,SellsPhotobookGeneral,SellsNovel,SellsGame,SellsMusic,SellsGoods,circle_facebook,circle_instagram,circle_twitter,circle_other_socials,marketplace_link,other_fandom,sampleworks_images,SellsHandmadeCrafts,SellsMagazine,SellsPhotobookCosplay",
+              "name,circle_code,SellsCommision,SellsComic,SellsArtbook,SellsPhotobookGeneral,SellsNovel,SellsGame,SellsMusic,SellsGoods,circle_youtube,circle_instagram,circle_twitter,circle_other_socials,marketplace_link,other_fandom,sampleworks_images,SellsHandmadeCrafts,SellsMagazine,SellsPhotobookCosplay",
             )
             .eq("user_id", store.user.id)
             .single();
@@ -238,7 +238,7 @@ export default {
     async function removeImage(sampleworks_image, $event) {
       $event.preventDefault();
       const { data, error: error_upload } = await supabase.storage
-        .from("circle-sampleworks-22")
+        .from("circle-sampleworks-23")
         .remove([sampleworks_image.slice(88)], {
           cacheControl: "3600",
           upsert: true,
@@ -280,7 +280,7 @@ export default {
           const file_folder = self.crypto.randomUUID();
 
           const { data, error: error_upload } = await supabase.storage
-            .from("circle-sampleworks-22")
+            .from("circle-sampleworks-23")
             .upload(
               `${store.user.id}/${file_folder}/${circle_data.value.circle_code}.${filename}`,
               resizeFile,
